@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough" xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+    <title>Web_Lab_3</title>
+    <h:outputStylesheet library="css" name="main.css"/>
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css"/>
+</h:head>
+
+<h:body>
+    <table id="table">
+        <tr>
+            <td id="header" colspan="2">
+                <h:link outcome="goToIndex">
+                    <h1>Главная страница</h1>
+                    <h2>*переход на стартовую страницу*</h2>
+                </h:link>
+            </td>
+        </tr>
+        <tr class="firstRow">
+            <td class="form" colspan="1" width="50%">
+                <br/> <br/>
+                <h:form id="answer" action="servlets.ControllerServlet">
+
+                    <div>
+                        X:
+                        <h:selectOneRadio id="inputX" class="input_x" value="#{handlerBean.hit.x}" style="margin-left: 23%">
+                            <f:selectItem itemValue="-4" itemLabel="-4"/>
+                            <f:selectItem itemValue="-3" itemLabel="-3"/>
+                            <f:selectItem itemValue="-2" itemLabel="-2"/>
+                            <f:selectItem itemValue="-1" itemLabel="-1"/>
+                            <f:selectItem itemValue="0" itemLabel="0"/>
+                            <f:selectItem itemValue="1" itemLabel="1"/>
+                            <f:selectItem itemValue="2" itemLabel="2"/>
+                            <f:selectItem itemValue="3" itemLabel="3"/>
+                            <f:selectItem itemValue="4" itemLabel="4"/>
+                            <f:converter converterId="NumberConverter"/>
+                        </h:selectOneRadio>
+
+                        <br/>
+                        <h:message for="inputX" class="errorMessage"/>
+
+                        <br/>
+
+                        Y:
+                        <h:inputText id="inputY" class="input_y" name="Y" autocomplete="false"
+                                     maxlength="9" a:placeholder="(-3..5)" value="#{handlerBean.hit.y}">
+                            <f:converter converterId="NumberConverter"/>
+                            <f:validator validatorId="Yvalid"/>
+                        </h:inputText>
+                        <br/>
+                        <h:message for="inputY" class="errorMessage"/>
+                        <br/>
+                        R:
+                        <h:selectOneMenu id="inputR" class="input_R" value="#{handlerBean.hit.r}">
+                            <f:selectItem itemValue="1" itemLabel="1"/>
+                            <f:selectItem itemValue="1.5" itemLabel="1.5"/>
+                            <f:selectItem itemValue="2" itemLabel="2"/>
+                            <f:selectItem itemValue="2.5" itemLabel="2.5"/>
+                            <f:selectItem itemValue="3" itemLabel="3"/>
+                            <f:converter converterId="NumberConverter"/>
+                            <f:validator validatorId="RValidator"/>
+                        </h:selectOneMenu>
+                        <br/>
+
+                        <br/>
+                        <h:message for="inputR" class="errorMessage"/>
+                        <br/>
+                    </div>
+
+                    <h:commandButton class="submit" value="Submit" action="#{handlerBean.addHit()}">
+                        <p:ajax process="answer"
+                                update="answer results"
+                                oncomplete="drawHitStatic(true)"/>
+                    </h:commandButton>
+                </h:form>
+                <h:form id="form_hidden" style="display: none">
+                    <h:inputHidden id="x_hidden" value="#{handlerBean.hit.x}"/>
+                    <h:inputHidden id="y_hidden" value="#{handlerBean.hit.y}"/>
+                    <h:inputHidden id="r_hidden" value="#{handlerBean.hit.r}"/>
+                    <h:inputHidden id="length_hidden"/>
+                    <h:inputHidden id="pagination_button_hidden"/>
+                    <h:commandButton id="button_hidden" action="#{handlerBean.addHit()}">
+                        <f:ajax execute="@form" render="results" onevent="
+                                (data) => {
+                                    if (data.status === 'success') {
+                                        drawHitStatic(true)
+                                    }
+                                }
+                                "/>
+                    </h:commandButton>
+                </h:form>
+            </td>
+            <td class="block">
+
+                <canvas id="chart" height="602px" width="602px"></canvas>
+                <svg width="602" height="602" xmlns="http://www.w3.org/2000/svg">
+                    <g>
+                        <title>Layer 1</title>
+                        <rect id="svg_27" height="601" width="601" y="0" x="0" stroke-width="0" stroke="#000" fill="#ffffff"/>
+                        <ellipse opacity="0.5" stroke-width="0" stroke="#000" ry="198.95203" rx="198.95203" id="svg_19" cy="300.99999" cx="300.99999" fill="#CC7C65"/>
+                        <rect id="svg_22" height="255.88678" width="387.26161" y="45.67267" x="179.40048" stroke-width="0" stroke="#000" fill="#ffffff"/>
+                        <rect stroke-width="0" stroke="#000" id="svg_20" height="470.14383" width="251.04632" y="81.2972" x="50.16612" fill="#ffffff"/>
+                        <rect transform="rotate(26.5 250.828 301.171)" stroke="#000" opacity="0.5" id="svg_24" height="407.8502" width="88.52208" y="97.24627" x="206.56648" stroke-width="0" fill="#CC7C65"/>
+                        <rect id="svg_26" height="225.95212" width="201.9012" y="301.79218" x="99.00488" stroke-width="0" stroke="#000" fill="#ffffff"/>
+                        <line fill="none" stroke="#000" x1="301" y1="0" x2="301" y2="602.00014" id="svg_1" stroke-linejoin="undefined" stroke-linecap="undefined"/>
+                        <rect stroke-width="0" stroke="#000" id="svg_25" height="201.41294" width="98.60697" y="99.85402" x="300.98677" fill="#ffffff"/>
+                        <line fill="none" stroke="#000" x1="0" y1="301" x2="602" y2="301" id="svg_2" stroke-linejoin="undefined" stroke-linecap="undefined"/>
+                        <line stroke-linecap="undefined" stroke-linejoin="undefined" id="svg_4" y2="310" x2="400" y1="290" x1="400" stroke="#000" fill="none"/>
+                        <line stroke-linecap="undefined" stroke-linejoin="undefined" id="svg_5" y2="310" x2="500" y1="290" x1="500" stroke="#000" fill="none"/>
+                        <line stroke-linecap="undefined" stroke-linejoin="undefined" id="svg_6" y2="310" x2="200" y1="289.79999" x1="200" stroke="#000" fill="none"/>
+                        <line stroke-linecap="undefined" stroke-linejoin="undefined" id="svg_7" y2="310" x2="100" y1="290" x1="100" stroke="#000" fill="none"/>
+                        <line stroke-linecap="undefined" stroke-linejoin="undefined" id="svg_8" y2="200" x2="310" y1="200" x1="290" stroke="#000" fill="none"/>
+                        <line stroke-linecap="undefined" stroke-linejoin="undefined" id="svg_9" y2="100" x2="310" y1="100" x1="290" stroke="#000" fill="none"/>
+                        <line stroke-linecap="undefined" stroke-linejoin="undefined" id="svg_10" y2="400" x2="310" y1="400" x1="290" stroke="#000" fill="none"/>
+                        <line stroke-linecap="undefined" stroke-linejoin="undefined" id="svg_11" y2="500" x2="310" y1="500" x1="290" stroke="#000" fill="none"/>
+                        <line stroke-linecap="undefined" stroke-linejoin="undefined" id="svg_12" y2="0" x2="300.59999" y1="10" x1="290.59999" stroke="#000" fill="none"/>
+                        <line stroke-linecap="undefined" stroke-linejoin="undefined" id="svg_13" y2="10" x2="309.32662" y1="0" x1="301" stroke="#000" fill="none"/>
+                        <line stroke-linecap="undefined" stroke-linejoin="undefined" id="svg_14" y2="300.9954" x2="601.83523" y1="294.67966" x1="595.51948" stroke="#000" fill="none"/>
+                        <line stroke-linecap="undefined" stroke-linejoin="undefined" id="svg_15" y2="300.46909" x2="601.83523" y1="310.46901" x1="593.41424" stroke="#000" fill="none"/>
+                        <rect opacity="0.5" stroke="#000" id="svg_17" height="201.41294" width="98.60697" y="99.85402" x="300.98677" fill="#CC7C65"/>
+                        <text xml:space="preserve" text-anchor="start" font-family="Noto Sans JP" font-size="24" id="svg_28" y="82.69148" x="304.07691" stroke-width="0" stroke="#000" fill="#000000">R</text>
+                        <text xml:space="preserve" text-anchor="start" font-family="Noto Sans JP" font-size="24" id="svg_30" y="282.69104" x="508.69185" stroke-width="0" stroke="#000" fill="#000000">R</text>
+                        <text style="cursor: move;" xml:space="preserve" text-anchor="start" font-family="Noto Sans JP" font-size="24" id="svg_31" y="518.07515" x="307.15382" stroke-width="0" stroke="#000" fill="#000000">-R</text>
+                        <text style="cursor: move;" xml:space="preserve" text-anchor="start" font-family="Noto Sans JP" font-size="24" id="svg_32" y="330.38325" x="94.84659" stroke-width="0" stroke="#000" fill="#000000">-R</text>
+                        <text style="cursor: move;" xml:space="preserve" text-anchor="start" font-family="Noto Sans JP" font-size="24" id="svg_33" y="180.53742" x="316.38457" stroke-width="0" stroke="#000" fill="#000000">R/2</text>
+                        <text style="cursor: move;" stroke="#000" xml:space="preserve" text-anchor="start" font-family="Noto Sans JP" font-size="24" id="svg_34" y="415.92152" x="310.23074" stroke-width="0" fill="#000000">-R/2</text>
+                        <text style="cursor: move;" xml:space="preserve" text-anchor="start" font-family="Noto Sans JP" font-size="24" id="svg_35" y="325.15249" x="204.07712" stroke-width="0" stroke="#000" fill="#000000">-R/2</text>
+                        <text xml:space="preserve" text-anchor="start" font-family="Noto Sans JP" font-size="24" id="svg_36" y="283.61412" x="405.61515" stroke-width="0" stroke="#000" fill="#000000">R/2</text>
+                    </g>
+
+                </svg>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="5" id="last_requests">Последние запросы:</td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                <div class="container py-5" id="contain">
+                    <div class="row">
+                        <h:panelGroup id="results">
+                            <table id="example" class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th class="col">Время запроса</th>
+                                    <th class="col">X</th>
+                                    <th class="col">Y</th>
+                                    <th class="col">R</th>
+                                    <th class="col">Попадание</th>
+                                    <th class="col">Время выполнения скрипта</th>
+                                </tr>
+                                </thead>
+                                <tbody id="rows" align="center">
+                                <ui:repeat value="#{handlerBean.hits}" var="hit">
+                                    <tr>
+                                        <td>#{hit.currentTime}</td>
+                                        <td>#{hit.x}</td>
+                                        <td>#{hit.y}</td>
+                                        <td>#{hit.r}</td>
+                                        <td>#{hit.hit}</td>
+                                        <td>#{hit.workTime} ns</td>
+                                    </tr>
+                                </ui:repeat>
+                                </tbody>
+                            </table>
+                        </h:panelGroup>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js" type=""></script>
+    <script src="resources/js/canvas.js" type=""></script>
+    <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js" type=""></script>
+    <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js" type=""></script>
+</h:body>
+</html>
